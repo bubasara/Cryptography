@@ -5,5 +5,5 @@
 #### This repo will be updated every week with new algorithms.
 
 #### For starters:
-* Ceasar Cipher
+* Caesar Cipher
 * Keyed Caesar Cipher
