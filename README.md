@@ -7,3 +7,4 @@
 #### For starters:
 * Caesar Cipher
 * Keyed Caesar Cipher
+* Hebrew Cipher
