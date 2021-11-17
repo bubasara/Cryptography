@@ -37,7 +37,7 @@ public class HebrewCipher {
 		HebrewCipher hebrew_cipher = new HebrewCipher();
 		String result = "";
 		Scanner in = new Scanner(System.in);
-		System.out.println("What do you want to do?\n1 - encode\n2 - decode\n3 - encode numeric");
+		System.out.println("What do you want to do?\n1 - encode\n2 - decode\n3 - encode numeric\n4 - decode numeric");
 		Integer choice = in.nextInt();
 		while (choice != 1 && choice !=2 && choice !=3 && choice !=4) {
 			System.out.println("Please type only 1 or 2 or 3 or 4: ");
@@ -49,13 +49,25 @@ public class HebrewCipher {
 			result = hebrew_cipher.encode(open_text);
 		} else if(choice == 2){
 			System.out.println("Write a sentence you want to be decoded: ");
-			String chiper = in.next().toString();
-			result = hebrew_cipher.decode(chiper);
+			String cipher = in.next().toString();
+			result = hebrew_cipher.decode(cipher);
 		}
 		if(choice == 3) {
 			System.out.println("Write a sentence you want to be encoded: ");
 			String open_text = in.next().toString();
 			result = hebrew_cipher.encodeNumeric(open_text);
+		}
+		if(choice == 4) {
+			System.out.println("Write a sentence you want to be decoded (type any letter to stop input): ");
+			ArrayList<Integer> cipher = new ArrayList<Integer>();
+			while(in.hasNextInt()) {
+				int num = in.nextInt();
+				//only numbers 0-25 are binded to Z-A
+				if(num<0 || num>25)
+					continue;
+				cipher.add(num);
+			}
+			result = hebrew_cipher.decodeNumeric(cipher);
 		}
 		System.out.println("The result is: " + result);
 		in.close();
@@ -91,8 +103,11 @@ public class HebrewCipher {
 		return this.cipher;
 	}
 	
-	public String decodeNumeric(Integer cipher_nums[]) {
-		//TODO
+	public String decodeNumeric(ArrayList<Integer> cipher) {
+		//each number is equivalent to a letter in cipher alphabet
+		for (Integer i : cipher) {
+			this.open_text += this.cipher_alphabet.get(i);
+		}
 		return this.open_text;
 	}
 }
