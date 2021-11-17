@@ -58,7 +58,7 @@ public class HebrewCipher {
 			result = hebrew_cipher.encodeNumeric(open_text);
 		}
 		if(choice == 4) {
-			System.out.println("Write a sentence you want to be decoded (type any letter to stop input):");
+			System.out.println("Write a sentence you want to be decoded (type any letter to stop input): ");
 			ArrayList<Integer> cipher = new ArrayList<Integer>();
 			while(in.hasNextInt()) {
 				int num = in.nextInt();
