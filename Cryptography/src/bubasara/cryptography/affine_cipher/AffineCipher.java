@@ -13,11 +13,14 @@ public class AffineCipher {
 		this.key_a = a;
 		this.key_b = b;
 		this.open_text = open_text;
+		this.open_text = new String();
+		this.cipher = new String();
 		
 		this.alphabet = new ArrayList<Character>(26);
 		for(char ch='a'; ch<='z'; ++ch ) {
 			this.alphabet.add(ch);
 		}
+	
 	}
 
 	public static void main(String[] args) {
@@ -35,12 +38,14 @@ public class AffineCipher {
 			Integer b = in.nextInt();
 			if (gcd(a, 26) == 1 && gcd(a, b) == 1 && 0 < b && b < 26) {
 				affine_cipher = new AffineCipher(a, b, open_text);
+				a_valid = true;
+				b_valid = true;
 			} else {
 				System.out.println("Key is not valid, try again");
 			}
 		}
 		in.close();
-		result = affine_cipher.encode();
+		result = affine_cipher.encode(affine_cipher, open_text);
 		System.out.println("The result is: " + result);
 	}
 	
@@ -52,8 +57,17 @@ public class AffineCipher {
 	    return gcd(num2, num1 % num2);
 	}
 	
-	public String encode() {
-		//TODO
+	public String encode(AffineCipher affine_cipher, String open_text) {
+		char[] open_text_chars = open_text.toLowerCase().toCharArray();
+		for (char ch : open_text_chars) {
+			//x = alphabet.indexOf(ch) - find numeric equivalent of a character
+			//apply formula x = (a*x + b) % 26
+			int ch_num = (affine_cipher.key_a * alphabet.indexOf(ch) + affine_cipher.key_b) % 26;
+			//System.out.println("index: " + alphabet.indexOf(ch)+"\tch_num: " + ch_num);
+			//find character of that index in alphabet
+			//and add it to the result
+			this.cipher += alphabet.get(ch_num);
+		}
 		return cipher;
 	}
 
