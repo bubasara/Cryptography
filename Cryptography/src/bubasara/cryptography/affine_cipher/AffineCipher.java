@@ -113,5 +113,4 @@ public class AffineCipher {
 		}
 		return this.open_text;
 	}
-
 }
