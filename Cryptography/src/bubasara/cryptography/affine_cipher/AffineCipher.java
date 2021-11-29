@@ -28,15 +28,25 @@ public class AffineCipher {
 		Boolean b_valid = false;
 		AffineCipher affine_cipher = null;
 		Scanner in = new Scanner(System.in);
-		System.out.println("Write a text you want to be encoded\n(only letters will be taken into account): ");
-		String open_text = in.next().toString();
+		System.out.println("Type 1 if you want to encode OR 2 if you want to decode a text:");
+		Integer choice = in.nextInt();
+		while (choice != 1 && choice !=2) {
+			System.out.println("Please type only 1 or 2: ");
+			choice = in.nextInt();
+		}
+		if(choice == 1) {
+			System.out.println("Write a text you want to be encoded\n(only letters will be taken into account): ");
+		} else if(choice == 2){
+			System.out.println("Write a text you want to be decoded\n(only letters will be taken into account): ");
+		}
+		String input = in.next().toString();
 		while (!a_valid || !b_valid) {
 			System.out.println("What's the key? First num: ");
 			Integer a = in.nextInt();
 			System.out.println("What's the key? Second num: ");
 			Integer b = in.nextInt();
 			if (gcd(a, 26) == 1 && gcd(a, b) == 1 && 0 < b && b < 26) {
-				affine_cipher = new AffineCipher(a, b, open_text);
+				affine_cipher = new AffineCipher(a, b, input);
 				a_valid = true;
 				b_valid = true;
 			} else {
@@ -44,8 +54,10 @@ public class AffineCipher {
 			}
 		}
 		in.close();
-		//result = affine_cipher.encode(affine_cipher, open_text);
-		result = affine_cipher.decode(affine_cipher, open_text);
+		if(choice == 1)
+			result = affine_cipher.encode(affine_cipher, input);
+		else if(choice == 2)
+			result = affine_cipher.decode(affine_cipher, input);
 		System.out.println("The result is: " + result);
 	}
 	
@@ -84,12 +96,21 @@ public class AffineCipher {
 	public String decode(AffineCipher affine_cipher, String cipher) {
 		char[] cipher_chars = cipher.toLowerCase().toCharArray();
 		for (char ch : cipher_chars) {
+			//find numeric equivalent of a character
 			int y = alphabet.indexOf(ch);
-			int x = (inverse(affine_cipher.key_a, 26) * Math.abs(y - affine_cipher.key_b)) % 26;
-			System.out.println("ch: " + ch + " y: " + y + " x: " + x);
+			//check if y-b < 0
+			int temp = y - affine_cipher.key_b;
+			if(temp < 0) {
+				//if yes, add 26 and make a cycle
+				temp += 26;
+			}
+			//apply formula x = (a^-1 * (y - b)) % 26
+			int x = (inverse(affine_cipher.key_a, 26) * temp) % 26;
+			//System.out.println("ch: " + ch + " temp: " + temp + " y: " + y + " x: " + x);
+			//find character of that index in alphabet
+			//and add it to the result
 			this.open_text += alphabet.get(x);
 		}
 		return this.open_text;
 	}
-
 }
