@@ -20,7 +20,6 @@ public class AffineCipher {
 		for(char ch='a'; ch<='z'; ++ch ) {
 			this.alphabet.add(ch);
 		}
-	
 	}
 
 	public static void main(String[] args) {
@@ -45,7 +44,8 @@ public class AffineCipher {
 			}
 		}
 		in.close();
-		result = affine_cipher.encode(affine_cipher, open_text);
+		//result = affine_cipher.encode(affine_cipher, open_text);
+		result = affine_cipher.decode(affine_cipher, open_text);
 		System.out.println("The result is: " + result);
 	}
 	
@@ -57,18 +57,39 @@ public class AffineCipher {
 	    return gcd(num2, num1 % num2);
 	}
 	
+	//multiplicative inverse of a
+	static int inverse(int num, int modulo) 
+    { 
+		num = num % modulo; 
+        for (int i = 1; i < modulo; i++) 
+           if ((num * i) % modulo == 1) 
+              return i; 
+        return 1; 
+    } 
+	
 	public String encode(AffineCipher affine_cipher, String open_text) {
 		char[] open_text_chars = open_text.toLowerCase().toCharArray();
 		for (char ch : open_text_chars) {
 			//x = alphabet.indexOf(ch) - find numeric equivalent of a character
-			//apply formula x = (a*x + b) % 26
-			int ch_num = (affine_cipher.key_a * alphabet.indexOf(ch) + affine_cipher.key_b) % 26;
+			//apply formula y = (a*x + b) % 26
+			int y = (affine_cipher.key_a * alphabet.indexOf(ch) + affine_cipher.key_b) % 26;
 			//System.out.println("index: " + alphabet.indexOf(ch)+"\tch_num: " + ch_num);
 			//find character of that index in alphabet
 			//and add it to the result
-			this.cipher += alphabet.get(ch_num);
+			this.cipher += alphabet.get(y);
 		}
-		return cipher;
+		return this.cipher;
+	}
+	
+	public String decode(AffineCipher affine_cipher, String cipher) {
+		char[] cipher_chars = cipher.toLowerCase().toCharArray();
+		for (char ch : cipher_chars) {
+			int y = alphabet.indexOf(ch);
+			int x = (inverse(affine_cipher.key_a, 26) * Math.abs(y - affine_cipher.key_b)) % 26;
+			System.out.println("ch: " + ch + " y: " + y + " x: " + x);
+			this.open_text += alphabet.get(x);
+		}
+		return this.open_text;
 	}
 
 }
