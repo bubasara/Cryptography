@@ -8,4 +8,4 @@
 * Caesar Cipher
 * Keyed Caesar Cipher
 * Hebrew Cipher
-* Affine Cipher (wip)
+* Affine Cipher
