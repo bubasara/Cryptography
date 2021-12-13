@@ -39,14 +39,14 @@ public class AffineCipher {
 		} else if(choice == 2){
 			System.out.println("Write a text you want to be decoded\n(only letters will be taken into account): ");
 		}
-		String input = in.next().toString();
+		String text = in.next().toString();
 		while (!a_valid || !b_valid) {
 			System.out.println("What's the key? First num: ");
 			Integer a = in.nextInt();
 			System.out.println("What's the key? Second num: ");
 			Integer b = in.nextInt();
 			if (gcd(a, 26) == 1 && gcd(a, b) == 1 && 0 < b && b < 26) {
-				affine_cipher = new AffineCipher(a, b, input);
+				affine_cipher = new AffineCipher(a, b, text);
 				a_valid = true;
 				b_valid = true;
 			} else {
@@ -55,9 +55,9 @@ public class AffineCipher {
 		}
 		in.close();
 		if(choice == 1)
-			result = affine_cipher.encode(affine_cipher, input);
+			result = affine_cipher.encode(affine_cipher, text);
 		else if(choice == 2)
-			result = affine_cipher.decode(affine_cipher, input);
+			result = affine_cipher.decode(affine_cipher, text);
 		System.out.println("The result is: " + result);
 	}
 	
@@ -70,8 +70,7 @@ public class AffineCipher {
 	}
 	
 	//multiplicative inverse of a
-	static int inverse(int num, int modulo) 
-    { 
+	static int inverse(int num, int modulo){ 
 		num = num % modulo; 
         for (int i = 1; i < modulo; i++) 
            if ((num * i) % modulo == 1) 
