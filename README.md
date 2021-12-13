@@ -9,4 +9,4 @@
 * Keyed Caesar Cipher
 * Hebrew Cipher
 * Affine Cipher
-* Vigenère cipher (wip)
+* Vigenère Cipher (wip)
