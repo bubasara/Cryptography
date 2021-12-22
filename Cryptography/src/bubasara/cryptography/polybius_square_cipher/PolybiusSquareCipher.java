@@ -3,6 +3,7 @@ package bubasara.cryptography.polybius_square_cipher;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 public class PolybiusSquareCipher {
@@ -62,6 +63,10 @@ public class PolybiusSquareCipher {
 	}
 	
 	public String encode(String open_text) {
+		//each letter is represented by two digits ij
+		//in a Polybius Sqare
+		//where i = row, j = column
+		//of the position of that letter
 		char[] open_text_chars = open_text.toLowerCase().toCharArray();
 		for (char ch : open_text_chars) {
 			if(ch=='j')
@@ -79,13 +84,51 @@ public class PolybiusSquareCipher {
 		return this.cipher;
 	}
 	
-	public void decode(String cipher) {
-		//todo
+	public String decode(String cipher) {
+		//each pair of digits represents the position
+		//of the letter in a Polybius Sqare
+        String[] cipher_two_chars = cipher.split("(?<=\\G.{2})");
+        int num;
+        int i;
+        int j;
+        for (String s : cipher_two_chars) {
+        	 try{
+                 num = Integer.parseInt(s);
+                 i = num/10;
+                 j = num%10;
+                 open_text += this.square[i][j];
+             }
+             catch (NumberFormatException e){
+                 e.printStackTrace();
+             }
+		}
+        return this.open_text;
 	}
 	
 	public static void main(String[] args) {
-		PolybiusSquareCipher cipher = new PolybiusSquareCipher("");
-		cipher.print();
-		System.out.println("Cipher: " + cipher.encode("kriptografija"));
+		Scanner in = new Scanner(System.in);
+		System.out.println("Secret keyword: ");
+		String keyword = in.next().toString();
+		System.out.println("Type 1 if you want to encode OR 2 if you want to decode a text:");
+		Integer choice = in.nextInt();
+		while (choice != 1 && choice !=2) {
+			System.out.println("Please type only 1 or 2: ");
+			choice = in.nextInt();
+		}
+		if(choice == 1) {
+			System.out.println("Write a text you want to be encoded\n(only letters will be taken into account): ");
+		} else if(choice == 2){
+			System.out.println("Write a text you want to be decoded\n(only letters will be taken into account): ");
+		}
+		String text = in.next().toString();
+		
+		PolybiusSquareCipher polybius = new PolybiusSquareCipher(keyword);
+		System.out.println();
+		polybius.print();
+		if(choice == 1)
+			System.out.println("Cipher: " + polybius.encode(text));
+		else if(choice == 2)
+			System.out.println("Open text: " + polybius.decode(text));
+		in.close();
 	}
 }
