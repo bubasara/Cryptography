@@ -54,10 +54,10 @@ public class PolybiusSquareCipher {
 	public void print() {
 		System.out.println("Polybius Sqare:\n");
 		for (int i = 1; i < 6; i++) {
-            for (int j = 1; j < 6; j++) {
-                System.out.print(square[i][j] + " ");
-            }
-            System.out.println();
+			for (int j = 1; j < 6; j++) {
+				System.out.print(square[i][j] + " ");
+			}
+			System.out.println();
 		}
 		System.out.println();
 	}
@@ -69,14 +69,15 @@ public class PolybiusSquareCipher {
 		//of the position of that letter
 		char[] open_text_chars = open_text.toLowerCase().toCharArray();
 		for (char ch : open_text_chars) {
-			if(ch=='j')
+			if(ch=='j') {
 				ch='i';
+			}
 			for (int i = 1; i < 6; i++) {
-	            for (int j = 1; j < 6; j++) {
-	            	if (this.square[i][j] == ch) {
-	            		this.cipher += i;
-	            		this.cipher += j;
-	            		break;
+				for (int j = 1; j < 6; j++) {
+					if (this.square[i][j] == ch) {
+						this.cipher += i;
+						this.cipher += j;
+						break;
 	            	}
 	            }
 			}
@@ -87,22 +88,22 @@ public class PolybiusSquareCipher {
 	public String decode(String cipher) {
 		//each pair of digits represents the position
 		//of the letter in a Polybius Sqare
-        String[] cipher_two_chars = cipher.split("(?<=\\G.{2})");
-        int num;
-        int i;
-        int j;
-        for (String s : cipher_two_chars) {
-        	 try{
-                 num = Integer.parseInt(s);
-                 i = num/10;
-                 j = num%10;
-                 open_text += this.square[i][j];
-             }
-             catch (NumberFormatException e){
-                 e.printStackTrace();
-             }
+		String[] cipher_two_chars = cipher.split("(?<=\\G.{2})");
+		int num;
+		int i;
+		int j;
+		for (String s : cipher_two_chars) {
+			try{
+				num = Integer.parseInt(s);
+				i = num/10;
+				j = num%10;
+				open_text += this.square[i][j];
+			}
+			catch (NumberFormatException e){
+				e.printStackTrace();
+			}
 		}
-        return this.open_text;
+		return this.open_text;
 	}
 	
 	public static void main(String[] args) {
@@ -121,14 +122,14 @@ public class PolybiusSquareCipher {
 			System.out.println("Write a text you want to be decoded\n(only letters will be taken into account): ");
 		}
 		String text = in.next().toString();
-		
 		PolybiusSquareCipher polybius = new PolybiusSquareCipher(keyword);
 		System.out.println();
 		polybius.print();
-		if(choice == 1)
+		if(choice == 1) {
 			System.out.println("Cipher: " + polybius.encode(text));
-		else if(choice == 2)
+		} else if(choice == 2) {
 			System.out.println("Open text: " + polybius.decode(text));
+		}
 		in.close();
 	}
 }
