@@ -54,6 +54,10 @@ public class PolybiusSquareCipher {
 		System.out.println();
 	}
 	
+	public static void encode(String open_text, String keyword) {
+		
+	}
+	
 	public static void main(String[] args) {
 		PolybiusSquareCipher cipher = new PolybiusSquareCipher("");
 		cipher.print();
