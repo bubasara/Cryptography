@@ -10,3 +10,4 @@
 * Hebrew Cipher
 * Affine Cipher
 * Vigenère Cipher
+* Polybius Square Cipher
