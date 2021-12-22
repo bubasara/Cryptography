@@ -122,7 +122,6 @@ public class PolybiusSquareCipher {
 			System.out.println("Write a text you want to be decoded\n(only letters will be taken into account): ");
 		}
 		String text = in.next().toString();
-		
 		PolybiusSquareCipher polybius = new PolybiusSquareCipher(keyword);
 		System.out.println();
 		polybius.print();
