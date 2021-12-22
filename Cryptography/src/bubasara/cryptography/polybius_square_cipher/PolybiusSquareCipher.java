@@ -22,8 +22,9 @@ public class PolybiusSquareCipher {
 		for (Character ch : keyword_chars) {
 			//validation: only letters a-z allowed
 			//ignore other characters
-			if(ch<97 || ch>122)
+			if(ch<97 || ch>122) {
 				continue;
+			}
 			//alphabet has 26 letters, but Polybius square has 25
 			//'i' & 'j' share a cell in matrix
 			if(ch=='j') {
@@ -78,8 +79,8 @@ public class PolybiusSquareCipher {
 						this.cipher += i;
 						this.cipher += j;
 						break;
-	            	}
-	            }
+					}
+				}
 			}
 		}
 		return this.cipher;
