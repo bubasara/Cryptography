@@ -22,14 +22,16 @@ public class PolybiusSquareCipher {
 			//alphabet has 26 letters, but Polybius square has 25
 			//'i' & 'j' share a cell in matrix
 			if(ch=='j')
-				ch = 'i';
-			alphabet.add(ch);
+				alphabet.add('i');
+			else
+				alphabet.add(ch);
 		}
 		//adding other letters to the alphabet
 		for(char ch='a'; ch<='z'; ++ch ) {
 			if(ch=='j')
 				alphabet.add('i');
-			alphabet.add(ch);
+			else
+				alphabet.add(ch);
 		}
 		//making a list out of this set, because we need indexes
 		List<Character> cipher_alphabet = new ArrayList<Character>(alphabet);
@@ -43,17 +45,18 @@ public class PolybiusSquareCipher {
 	
 	//print matrix
 	public void print() {
+		System.out.println("Polybius Sqare:\n");
 		for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++)
                 System.out.print(square[i][j] + " ");
             System.out.println();
 		}
+		System.out.println();
 	}
-
+	
 	public static void main(String[] args) {
-		PolybiusSquareCipher cipher = new PolybiusSquareCipher("kvadrat");
+		PolybiusSquareCipher cipher = new PolybiusSquareCipher("");
 		cipher.print();
 
 	}
-
 }
