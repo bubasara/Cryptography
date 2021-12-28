@@ -69,7 +69,7 @@ public class HomophonicSubstitutionCipher {
 	
 	public static void main(String[] args) {
 		//wip
-		//input - only unique values
+		//TODO input - only unique values
 		//use set for validation
 		HomophonicSubstitutionCipher hsp = new HomophonicSubstitutionCipher();
 		hsp.createAlphabet();
