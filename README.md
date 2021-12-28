@@ -11,3 +11,4 @@
 * Affine Cipher
 * Vigenère Cipher
 * Polybius Square Cipher
+* Homophonic Substitution Cipher
