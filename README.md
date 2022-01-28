@@ -12,3 +12,5 @@
 * Vigenère Cipher
 * Polybius Square Cipher
 * Homophonic Substitution Cipher
+* Hill Cipher (todo)
+* Columnar Transposition Cipher (wip)
