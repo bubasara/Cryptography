@@ -20,6 +20,7 @@ public class ColumnarTranspositionCipher {
 	private int m;
 	Map<Integer, ArrayList<Character>> columns = new HashMap<Integer, ArrayList<Character>>();
 	
+	//constructor for text we want to encode
 	public ColumnarTranspositionCipher(String open_text, Integer[] key) {
 		this.key = key;
 		this.cipher = new String();
@@ -44,6 +45,12 @@ public class ColumnarTranspositionCipher {
 				}
 			}
 		}
+	}
+	
+	//constructor for text we want to decode
+	public ColumnarTranspositionCipher(Integer[] key, String cipher) {
+		this.key = key;
+		this.cipher = cipher;
 	}
 	
 	public void printMatrix() {
@@ -98,7 +105,6 @@ public class ColumnarTranspositionCipher {
 	    //sorting entries by values
 	    Set<Entry<Integer, ArrayList<Character>>> columnsEntrySetSortedByValue = columnsSortedByValue.entrySet();
 	    for(Entry<Integer, ArrayList<Character>> mapping : columnsEntrySetSortedByValue){
-	        //System.out.println(mapping.getKey() + " ==> " + mapping.getValue());
 	        //removing nums so only cipher chars remain
 	        temp = mapping.getValue();
 	        temp.remove(0);
@@ -110,11 +116,49 @@ public class ColumnarTranspositionCipher {
 		return this.cipher;
 	}
 	
+	public String decode() {
+		int blocks_len = this.cipher.length() / this.key.length;
+		int blocks_num = key.length;		
+		int start = 0;
+		int end = blocks_len;
+		int counter = 1;
+		Map<Integer, ArrayList<Character>> map = new HashMap<Integer, ArrayList<Character>>();
+		
+		while (start <= (this.cipher.length()-4)) {
+			ArrayList<Character> block = new ArrayList<Character>();
+			String block_string = cipher.substring(start, end);
+			//System.out.println("block_string: " + block_string);
+			char[] block_chars = block_string.toLowerCase().toCharArray();
+			for (Character c : block_chars) {
+				//System.out.println("block_chars: " + c);
+				block.add(c);
+			}
+			map.put(counter++, block);
+			start += blocks_len;
+			end += blocks_len;
+		}
+		
+//		for (Map.Entry<Integer, ArrayList<Character>> entry : map.entrySet())
+//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+		
+		this.matrix = new Character[blocks_num][blocks_len];
+	
+		this.open_text = "";
+		for(int i = 0; i < blocks_len; i++) {
+			for (Integer j: this.key) {
+				this.open_text += map.get(j).get(i);
+			}
+		}
+		return this.open_text;
+	}
+	
 	public static void main(String[] args) {
 		Integer[] key = {4,3,1,2,5,7,6};
 		ColumnarTranspositionCipher cipher = new ColumnarTranspositionCipher("kriptografija i kriptoanaliza", key);
 		cipher.printMatrix();
-		System.out.println("\nCipher: " + cipher.encode());
+		System.out.println("\nEncode result: " + cipher.encode());
+		ColumnarTranspositionCipher cipher2 = new ColumnarTranspositionCipher(key, "ifilpipirarakrkntjtzgiaxoaoa");
+		System.out.println("\nDecode result: " + cipher2.decode());
 	}
 
 }
