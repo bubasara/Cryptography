@@ -1,5 +1,15 @@
 package bubasara.cryptography.columnar_transposition_cipher;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class ColumnarTranspositionCipher {
 	private Integer[] key;			//permutation of numbers
@@ -8,6 +18,7 @@ public class ColumnarTranspositionCipher {
 	private Character[][] matrix;	//matrix used for encryption
 	private int n;
 	private int m;
+	Map<Integer, ArrayList<Character>> columns = new HashMap<Integer, ArrayList<Character>>();
 	
 	public ColumnarTranspositionCipher(String open_text, Integer[] key) {
 		this.key = key;
@@ -43,11 +54,67 @@ public class ColumnarTranspositionCipher {
 			System.out.println();
 		}
 	}
-
+	
+	//comparing by value (first element in ArrayList - key in Columnar Transposition Cipher)
+	//if cipher key is 4321576 then map values are ArrayLists: [4, ...] [3, ...] [2, ...] ... [6, ...]
+	//we compare by values 4, 3, 2, ..., 6
+	Comparator<Entry<Integer, ArrayList<Character>>> valueComparator = new Comparator<Entry<Integer,ArrayList<Character>>>() {
+		@Override
+		public int compare(Entry<Integer, ArrayList<Character>> o1, Entry<Integer, ArrayList<Character>> o2) {
+			Character v1 = o1.getValue().get(0);
+		    Character v2 = o2.getValue().get(0);
+		    return v1.compareTo(v2);
+		}
+	};
+	
+	public String encode() {
+		for (int i = 0; i < this.n; i++) {
+			for (int j = 0; j < this.m; j++) {
+				if (columns.containsKey(j+1)) {
+					columns.get(j+1).add(matrix[i][j]);
+				}
+				else {
+					ArrayList<Character> column_cipher = new ArrayList<Character>();
+					column_cipher.add(matrix[i][j]);
+					columns.put(j+1, column_cipher);
+				}
+			}
+		}
+		
+		//comparing by value
+		//reference: https://www.java67.com/2015/01/how-to-sort-hashmap-in-java-based-on.html
+		Set<Entry<Integer, ArrayList<Character>>> entries = columns.entrySet();
+		//Sort method needs a List, so let's first convert Set to List in Java
+		List<Entry<Integer, ArrayList<Character>>> listOfEntries = new ArrayList<Entry<Integer, ArrayList<Character>>>(entries);
+		//sorting HashMap by values using comparator
+		Collections.sort(listOfEntries, valueComparator);
+		LinkedHashMap<Integer, ArrayList<Character>> columnsSortedByValue = new LinkedHashMap<Integer, ArrayList<Character>>(listOfEntries.size());
+		//copying entries from List to Map
+		for(Entry<Integer, ArrayList<Character>> entry : listOfEntries){
+	        columnsSortedByValue.put(entry.getKey(), entry.getValue());
+	    }
+	    
+		ArrayList<Character> temp = new ArrayList<Character>();
+	    //sorting entries by values
+	    Set<Entry<Integer, ArrayList<Character>>> columnsEntrySetSortedByValue = columnsSortedByValue.entrySet();
+	    for(Entry<Integer, ArrayList<Character>> mapping : columnsEntrySetSortedByValue){
+	        //System.out.println(mapping.getKey() + " ==> " + mapping.getValue());
+	        //removing nums so only cipher chars remain
+	        temp = mapping.getValue();
+	        temp.remove(0);
+	        cipher += temp.toString();
+	    }
+	    //removing brackets, comas and spaces
+	    cipher = Arrays.toString(cipher.toCharArray()).replace("[", "").replace("]", "").replace(", ", "").replace(",", "").replace(" ", "");
+		
+		return this.cipher;
+	}
+	
 	public static void main(String[] args) {
 		Integer[] key = {4,3,1,2,5,7,6};
 		ColumnarTranspositionCipher cipher = new ColumnarTranspositionCipher("kriptografija i kriptoanaliza", key);
 		cipher.printMatrix();
+		System.out.println("\nCipher: " + cipher.encode());
 	}
 
 }
