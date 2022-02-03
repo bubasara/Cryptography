@@ -1,15 +1,15 @@
 package bubasara.cryptography.hill_cipher;
 
-//snippet from: https://www.geeksforgeeks.org/check-if-a-matrix-is-invertible/
+//snippet took and modified from: https://www.geeksforgeeks.org/check-if-a-matrix-is-invertible/
 public class Matrix {
 	// Dimension of input square matrix
-    static int N = 4; //can be modified, 4 is only a default value
+    static int N = 4;
     
     // Function to get cofactor
     // of mat[p][q] in temp[][].
     // n is current dimension
     // of mat[][]
-    static void getCofactor(int[][] mat, int[][] temp, int p, int q, int n) {
+    static void getCofactor(Integer[][] mat, Integer[][] temp, int p, int q, int n) {
     	int i = 0, j = 0;
 		// Looping for each
 		// element of the matrix
@@ -34,7 +34,7 @@ public class Matrix {
 	/* Recursive function for finding
 	determinant of matrix. n is current
 	dimension of mat[][]. */
-	static int determinantOfMatrix(int[][] mat, int n) {
+	static int determinantOfMatrix(Integer[][] mat, int n) {
 		int D = 0; // Initialize result
 	 
 		// Base case : if matrix
@@ -43,7 +43,7 @@ public class Matrix {
 			return mat[0][0];
 	         
 		// To store cofactors
-		int[][] temp = new int[N][N];
+		Integer[][] temp = new Integer[N][N];
 	     
 		// To store sign multiplier
 		int sign = 1;
@@ -59,38 +59,14 @@ public class Matrix {
 			// with alternate sign
 			sign = -sign;
 		}
-	 
+		
 		return D;
     }
 	
-	static boolean isInvertible(int[][] mat, int n) {
-		if (determinantOfMatrix(mat, N) != 0)
+	static boolean isInvertible(Integer[][] matrix, int n) {
+		if (determinantOfMatrix(matrix, N) != 0)
 			return true;
 		else
 			return false;
 	}
-	
-	 /* function for displaying the matrix */
-    static void display(int mat[][], int row, int col)
-    {
-        for (int i = 0; i < row; i++) 
-        {
-            for (int j = 0; j < col; j++)
-                System.out.print(mat[i][j]);
-
-            System.out.print("\n");
-        }
-    }
-	
-	public static void main(String []args)
-    {
-        int [][]mat = {{1, 0, 2, -1 },
-                       {3, 0, 0, 5 },
-                       {2, 1, 4, -3 },
-                       {1, 0, 5, 0 }};
-        if (isInvertible(mat, N))
-            System.out.println("Yes");
-        else
-            System.out.println("No");
-    }
 }
